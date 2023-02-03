@@ -1,0 +1,69 @@
+{:crm-environment             {:docs      "Environment"
+                               :providers [{:params/provider :params/env
+                                            :params/value    :crm-environment}
+
+                                           {:params/provider :params/static
+                                            :params/value    "dev"}]}
+
+ :crm-web-server-port         {:docs      "Web server port"
+                               :providers [{:params/provider :params/env
+                                            :params/value    :crm-web-server-port}
+
+                                           {:params/provider :params/static
+                                            :params/value    5000}]}
+
+ :crm-web-server-thread-count {:docs      "Number of threads of web server"
+                               :providers [{:params/provider :params/env
+                                            :params/value    :crm-web-server-thread-count}
+
+                                           {:params/provider :params/static
+                                            :params/value    4}]}
+
+ :crm-jwt-salt                {:docs      "JWT salt"
+                               :providers [{:params/provider :params/env
+                                            :params/value    :crm-jwt-salt}
+
+                                           {:params/provider :params/static
+                                            :params/value    "\".X5/AuAh4Wc.arYkJ!5StEI=m/17zh-Rvvl5ZtkS4Vb+o(u/I@O76RnAN99i*CX(34(KMhRrwB3K/mNe=1CM/TGLxcqut_1s_zXBFBrFN0vk8ToAOg3qV2U(4IN)vt7KxbSM/7!r!FxH!l?g.Kh3:q=hVDvOB1!TGSirDJNnwSs(#f-SeetQJLm?Czl0/MhW4+TT00UW*2H+OT67mN9WcMWNTJ02+MUwio#n_W(dN(gde?FT.bsACPGL4SoBqmhf\""}]}
+
+ :crm-jwt-secret              {:docs      "JWT secret"
+                               :providers [{:params/provider :params/env
+                                            :params/value    :crm-jwt-secret}
+
+                                           {:params/provider :params/static
+                                            :params/value    "development-secret"}]}
+
+ :crm-db-user                 {:docs      "CRM DB username"
+                               :providers [{:params/provider :params/env
+                                            :params/value    :crm-db-user}
+
+                                           {:params/provider :params/static
+                                            :params/value    "postgres"}]}
+
+ :crm-db-password             {:docs      "CRM DB password"
+                               :providers [{:params/provider :params/env
+                                            :params/value    :crm-db-password}
+
+                                           {:params/provider :params/static
+                                            :params/value    "password"}]}
+
+ :crm-db-name                 {:docs      "CRM DB name"
+                               :providers [{:params/provider :params/env
+                                            :params/value    :crm-db-name}
+
+                                           {:params/provider :params/static
+                                            :params/value    "personalcrmdb"}]}
+
+ :crm-db-host                 {:docs      "CRM DB host"
+                               :providers [{:params/provider :params/env
+                                            :params/value    :crm-db-host}
+
+                                           {:params/provider :params/static
+                                            :params/value    "localhost"}]}
+
+ :crm-db-port                 {:docs      "CRM DB port"
+                               :providers [{:params/provider :params/env
+                                            :params/value    :crm-db-port}
+
+                                           {:params/provider :params/static
+                                            :params/value    5432}]}}

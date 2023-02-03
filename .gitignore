@@ -1,0 +1,10 @@
+# IntelliJ IDEA
+.idea
+*.iml
+
+# Java
+target
+
+# Clojure
+.nrepl-port
+.lein-repl-history
