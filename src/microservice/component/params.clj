@@ -1,6 +1,5 @@
 (ns microservice.component.params
   (:require [clojure.java.io :as io]
-            [environ.core :refer [env]]
             [taoensso.timbre :as timbre]))
 
 (def ^:private params (atom {}))
@@ -16,7 +15,7 @@
 
 (defmulti resolve-param (fn [{:keys [params/provider]}] provider))
 
-(defmethod resolve-param :params/env [{:keys [params/value]}] (get env value))
+(defmethod resolve-param :params/env [{:keys [params/value]}] (-> value name (.replaceAll "-" "_") System/getenv))
 
 (defmethod resolve-param :params/static [{:keys [params/value]}]
   (println value)

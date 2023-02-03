@@ -18,7 +18,6 @@
                  [ring-cors "0.1.13"]
                  [prismatic/schema "1.1.12"]
                  [ring-logger "1.0.1"]
-                 [environ "1.2.0"]
                  [org.slf4j/slf4j-api "1.7.30"]
                  [com.taoensso/timbre "4.10.0"]
                  [com.fzakaria/slf4j-timbre "0.3.21"]
@@ -46,9 +45,6 @@
                  [buddy/buddy-hashers "1.6.0" :exclusions [cheshire
                                                            com.fasterxml.jackson.dataformat/jackson-dataformat-smile
                                                            com.fasterxml.jackson.dataformat/jackson-dataformat-cbor tigris]]]
-
-  :plugins [[lein-environ "1.2.0" :hooks false]]
-  ;;TODO: Remove
 
   :source-paths ["src"]
   :resource-paths ["resources"]
