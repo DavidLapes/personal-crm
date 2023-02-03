@@ -35,6 +35,7 @@
                               :or   {optional false}}]]
         (timbre/info (str "Resolving param - " param ""))
         (loop [coll providers]
+          (timbre/info (str "Attempting to fetch param - " param " - from - " (-> coll first :params/provider) " -"))
           (let [resolved-param (resolve-param (first coll))]
 
             ;;TODO maybe use if-let ?
