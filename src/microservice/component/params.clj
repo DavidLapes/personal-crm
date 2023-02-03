@@ -37,9 +37,6 @@
         (loop [coll providers]
           (timbre/info (str "Attempting to fetch param - " param " - from - " (-> coll first :params/provider) " -"))
           (let [resolved-param (resolve-param (first coll))]
-
-            ;;TODO maybe use if-let ?
-
             (if (some? resolved-param)
               (assoc params-map param resolved-param)
               (if (empty? (rest coll))
