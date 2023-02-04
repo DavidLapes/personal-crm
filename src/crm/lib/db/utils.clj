@@ -79,7 +79,6 @@
       (:count (first result))
       (:count result))))
 
-;;TODO: Support custom filters
 (defn- common-filter-query!
   "Returns result of query with all common non-nil filters applied."
   [connection table filters]
