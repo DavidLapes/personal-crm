@@ -1,6 +1,6 @@
 (ns microservice.system
   (:require [com.stuartsierra.component :as component]
-            [microservice.component.audit-logging :as audit-logger]
+            [microservice.component.audit-logging-impl :as audit-logger]
             [microservice.component.datasource :as datasource]
             [microservice.component.handler :as handler]
             [microservice.component.migration :as migration]
@@ -20,7 +20,6 @@
   (logging/init-logging)
   (params/init-params)
   (component/system-map
-    :crm.component/audit-logger (audit-logger/new-audit-logger-impl :crm.component/datasource)
     :crm.component/datasource (datasource/new-datasource)
     :crm.component/handler (handler/new-handler :crm.component/router
                                                 :crm.component/swagger)
