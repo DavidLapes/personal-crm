@@ -12,8 +12,8 @@
 
 (defn update!
   "Updates a user."
-  [connection id user]
-  (let [result (query/update-by-id! connection table-name id user)]
+  [connection user filters]
+  (let [result (query/update! connection table-name user filters)]
     (dissoc result :password)))
 
 (defn get-by-id!

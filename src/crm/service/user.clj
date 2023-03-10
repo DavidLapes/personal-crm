@@ -10,7 +10,7 @@
 
 (defn update!
   "Updates an existing user."
-  [datasource id data]
+  [datasource data]
   (jdbc/with-db-transaction [connection {:datasource datasource}]
     (model/update! connection id data)))
 
