@@ -10,7 +10,7 @@
    {:swagger {:tags ["Users"]}}
 
    [""
-    {:get {:summary "Return list of all users"
+    {:get {:summary "Returns list of all users"
            :responses {200 {:body UserListOutput}}
            :handler (wrap-with-context
                        (fn [request]
