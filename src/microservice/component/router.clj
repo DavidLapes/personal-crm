@@ -14,7 +14,7 @@
             [crm.api.route.health-check :as health-check]
             [crm.auth.middleware :as authentication]))
 
-(defrecord Router [datasource swagger audit-logger]
+(defrecord Router [datasource swagger]
   component/Lifecycle
 
   (start [this]
@@ -31,8 +31,7 @@
                                     auth/wrap-authentication-check]}]]]
 
                    {:data {:coercion   reitit-schema/coercion
-                           :ctx        {:datasource datasource
-                                        :audit-logger audit-logger}
+                           :ctx        {:datasource datasource}
                            :muuntaja   m/instance
                            :middleware [;; ring handler logger
                                         logger/wrap-with-logger
@@ -62,9 +61,8 @@
 
 (defn new-router
   "Returns instance of Router component."
-  [datasource-ref swagger-ref audit-logger-ref]
+  [datasource-ref swagger-ref]
   (component/using
     (map->Router {})
     {:datasource                  datasource-ref
-     :swagger                     swagger-ref
-     :audit-logger                audit-logger-ref}))
+     :swagger                     swagger-ref}))

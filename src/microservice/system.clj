@@ -1,6 +1,5 @@
 (ns microservice.system
   (:require [com.stuartsierra.component :as component]
-            [microservice.component.audit-logging-impl :as audit-logger]
             [microservice.component.datasource :as datasource]
             [microservice.component.handler :as handler]
             [microservice.component.migration :as migration]
@@ -25,8 +24,7 @@
                                                 :crm.component/swagger)
     :crm.component/migration (migration/new-migration :crm.component/datasource)
     :crm.component/router (router/new-router :crm.component/datasource
-                                             :crm.component/swagger
-                                             :crm.component/audit-logger)
+                                             :crm.component/swagger)
     :crm.component/swagger (swagger/new-swagger-handler)
     :crm.component/web-server (web-server/new-webserver :crm.component/handler)))
 
