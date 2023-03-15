@@ -4,7 +4,7 @@ CREATE TABLE users (
     password     VARCHAR(1000) NOT NULL,
     username     VARCHAR(32) NOT NULL,
     first_name   VARCHAR(32) NOT NULL,
-    middle_name  VARCHAR(32) NOT NULL,
+    middle_name  VARCHAR(32),
     last_name    VARCHAR(32) NOT NULL,
     is_active    BOOLEAN DEFAULT TRUE,
     is_deleted   BOOLEAN DEFAULT FALSE,
