@@ -3,7 +3,7 @@
             [buddy.sign.jwt :as jwt]
             [clojure.java.jdbc :as jdbc]
             [crm.auth.crypto :as crypto]
-            [crm.model.user :as model]
+            [crm.lib.db.utils :as query]
             [crm.service.user :as user-service]
             [microservice.component.params :as params])
   (:import (java.time LocalDateTime)))
@@ -48,7 +48,7 @@
   "Returns user by email."
   [datasource email]
   (jdbc/with-db-connection [connection {:datasource datasource}]
-    (model/get-login-detail-by-email! connection email)))
+    (query/get-one! connection crm.model.user/table-name {:email email})))
 
 (defn generate-auth-token
   "Generates authentication token for given user."

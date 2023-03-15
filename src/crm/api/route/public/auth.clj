@@ -12,5 +12,5 @@
             :responses {200 {:body AuthenticationToken}}
             :parameters {:body SignIn}
             :handler (wrap-with-context
-                       (fn [{:keys [ctx]}]
-                         (controller/sign-in ctx)))}}]])
+                       (fn [request]
+                         (controller/sign-in request)))}}]])

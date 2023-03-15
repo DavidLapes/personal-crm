@@ -11,8 +11,10 @@
             [reitit.ring.coercion :as coercion]
             [ring.logger :as logger]
             [taoensso.timbre :as timbre]
-            [crm.api.route.health-check :as health-check]
-            [crm.auth.middleware :as authentication]))
+            [crm.auth.middleware :as authentication]
+            [crm.api.route.private.user :as user-private]
+            [crm.api.route.public.health-check :as health-check-public]
+            [crm.api.route.public.auth :as auth-public]))
 
 (defrecord Router [datasource swagger]
   component/Lifecycle
@@ -22,11 +24,12 @@
     (let [datasource (:datasource datasource)
           router (ring/router
                    [(:swagger-routes swagger)
-                    health-check/routes
-
                     ["/api"
-                     ["/public"]
+                     ["/public"
+                      auth-public/routes
+                      health-check-public/routes]
                      ["/private"
+                      user-private/routes
                       {:middleware [(partial authentication/wrap-with-jwt-middleware datasource)
                                     auth/wrap-authentication-check]}]]]
 
