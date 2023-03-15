@@ -18,7 +18,6 @@
 (defmethod resolve-param :params/env [{:keys [params/value]}] (-> value name (.replaceAll "-" "_") System/getenv))
 
 (defmethod resolve-param :params/static [{:keys [params/value]}]
-  (println value)
   value)
 
 (defn- resolve-edn-params
@@ -35,13 +34,17 @@
                               :or   {optional false}}]]
         (timbre/info (str "Resolving param - " param ""))
         (loop [coll providers]
-          (timbre/info (str "Attempting to fetch param - " param " - from - " (-> coll first :params/provider) " -"))
+          (timbre/info (str "Attempting to fetch param - " param " - from - " (-> coll first :params/provider) ""))
           (let [resolved-param (resolve-param (first coll))]
             (if (some? resolved-param)
-              (assoc params-map param resolved-param)
+              (do
+                (timbre/info "Param " param " resolved")
+                (assoc params-map param resolved-param))
               (if (empty? (rest coll))
                 (if optional
-                  (assoc params-map param resolved-param)
+                  (do
+                    (timbre/info "Param " param " ignored by being optional")
+                    (assoc params-map param resolved-param))
                   (throw
                     (ex-info
                       (str "Required parameter " param " could not be resolved.")
