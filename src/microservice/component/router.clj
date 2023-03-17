@@ -12,6 +12,7 @@
             [ring.logger :as logger]
             [taoensso.timbre :as timbre]
             [crm.auth.middleware :as authentication]
+            [crm.api.route.private.person :as person-private]
             [crm.api.route.private.user :as user-private]
             [crm.api.route.public.health-check :as health-check-public]
             [crm.api.route.public.auth :as auth-public]))
@@ -30,13 +31,15 @@
                       health-check-public/routes]
                      ["/private"
                       user-private/routes
+                      person-private/routes
                       {:middleware [(partial authentication/wrap-with-jwt-middleware datasource)
                                     auth/wrap-authentication-check]}]]]
 
                    {:data {:coercion   reitit-schema/coercion
                            :ctx        {:datasource datasource}
                            :muuntaja   m/instance
-                           :middleware [;; ring handler logger
+                           :middleware [;;TODO -- wrapper with CTX
+                                        ;; ring handler logger
                                         logger/wrap-with-logger
                                         ;; ring cors middleware
                                         cors/cors-middleware

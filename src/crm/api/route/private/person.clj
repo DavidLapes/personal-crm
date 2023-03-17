@@ -1,41 +1,41 @@
-(ns crm.api.route.private.user
-  (:require [crm.api.controller.user :as controller]
+(ns crm.api.route.private.person
+  (:require [crm.api.controller.person :as controller]
             [crm.api.schema.message :refer [MessageResponse]]
-            [crm.api.schema.user :refer [CreateUser UserOutput UserListOutput UpdateUser]]
+            [crm.api.schema.person :refer [CreatePerson PersonOutput PersonListOutput UpdatePerson]]
             [crm.lib.api.router :refer [wrap-with-context]]
             [schema.core :as s]))
 
 (def routes
-  ["/users"
-   {:swagger {:tags ["Users"]}}
+  ["/persons"
+   {:swagger {:tags ["Persons"]}}
 
    [""
-    {:post {:summary    "Creates a user"
-            :responses  {201 {:body UserOutput}}
-            :parameters {:body CreateUser}
+    {:post {:summary    "Creates a person"
+            :responses  {201 {:body PersonOutput}}
+            :parameters {:body CreatePerson}
             :handler    (wrap-with-context
                           (fn [request]
                             (controller/create! request)))}
-     :get  {:summary   "Returns list of all users"
-            :responses {200 {:body UserListOutput}}
+     :get  {:summary   "Returns list of all persons"
+            :responses {200 {:body PersonListOutput}}
             :handler   (wrap-with-context
                          (fn [request]
                            (controller/get-all! request)))}}]
    ["/:id"
-    {:get    {:summary    "Returns user by ID"
-              :responses  {200 {:body UserOutput}}
+    {:get    {:summary    "Returns person by ID"
+              :responses  {200 {:body PersonOutput}}
               :parameters {:path {:id s/Int}}
               :handler    (wrap-with-context
                             (fn [request]
                               (controller/get-by-id! request)))}
-     :put    {:summary    "Updates user by ID"
-              :responses  {200 {:body UserOutput}}
-              :parameters {:body UpdateUser
+     :put    {:summary    "Updates person by ID"
+              :responses  {200 {:body PersonOutput}}
+              :parameters {:body UpdatePerson
                            :path {:id s/Int}}
               :handler    (wrap-with-context
                             (fn [request]
                               (controller/update! request)))}
-     :delete {:summary    "Deletes user by ID"
+     :delete {:summary    "Deletes person by ID"
               :responses  {200 {:body MessageResponse}}
               :parameters {:path {:id s/Int}}
               :handler    (wrap-with-context

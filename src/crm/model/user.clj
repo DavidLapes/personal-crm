@@ -2,6 +2,7 @@
   (:require [crm.lib.db.utils :as query]))
 
 (def table-name :users)
+(def table-name-view :v_users)
 
 (defn create!
   "Creates new user."

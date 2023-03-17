@@ -79,6 +79,7 @@
       (:count (first result))
       (:count result))))
 
+;;TODO: Support filters like ids=1,2,3 (arrays)
 (defn- common-filter-query!
   "Returns result of query with all common non-nil filters applied."
   [connection table filters]
@@ -90,6 +91,7 @@
                  (some? (:order_column filters)) (lib-order/apply-order-filter filters))
          (query! connection))))
 
+;;TODO: Support mass-update
 (defn update-by-id!
   "Executes insert query. Table must be passed as a keyword and data must be a map."
   [connection table id data]

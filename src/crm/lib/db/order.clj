@@ -14,7 +14,7 @@
   "Returns keywordized order direction filter from filters map."
   [filters]
   (when-let [direction (:order_direction filters)]
-    (condp = (-> direction lower-case keyword)
+    (condp = (-> direction lower-case name)
       "asc" :asc
       "desc" :desc
       :else (throw (ex-info "Invalid order direction" {:type  :validation
