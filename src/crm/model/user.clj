@@ -19,19 +19,19 @@
 (defn get-by-id!
   "Returns user by given ID."
   [connection id]
-  (let [result (query/get-by-id! connection table-name id)]
+  (let [result (query/get-by-id! connection table-name-view id)]
     (dissoc result :password)))
 
 (defn get-by-email!
   "Returns user by given email."
   [connection email]
-  (let [result (query/get-one! connection table-name {:email email})]
+  (let [result (query/get-one! connection table-name-view {:email email})]
     (dissoc result :password)))
 
 (defn get-all!
   "Returns users by given filters."
   [connection filters]
-  (let [result (query/get-all! connection table-name filters)]
+  (let [result (query/get-all! connection table-name-view filters)]
     (update result :data (fn [data]
                            (reduce
                              (fn [coll val]
