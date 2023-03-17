@@ -2,7 +2,9 @@
   (:require [com.stuartsierra.component :as component]
             [microservice.component.middleware.auth :as auth]
             [microservice.component.middleware.cors :as cors]
+            [microservice.component.middleware.ctx :as ctx]
             [microservice.component.middleware.exception :as exception]
+            [microservice.component.middleware.param :as param]
             [muuntaja.core :as m]
             [reitit.coercion.schema :as reitit-schema]
             [reitit.ring :as ring]
@@ -22,7 +24,7 @@
 
   (start [this]
     (timbre/info "Starting Router component")
-    (let [datasource (:datasource datasource)
+    (let [ctx {:datasource (:datasource datasource)}
           router (ring/router
                    [(:swagger-routes swagger)
                     ["/api"
@@ -30,23 +32,24 @@
                       auth-public/routes
                       health-check-public/routes]
                      ["/private"
+                      {:middleware [(partial authentication/wrap-with-jwt-middleware ctx)
+                                    auth/wrap-authentication-check]}
                       user-private/routes
-                      person-private/routes
-                      {:middleware [(partial authentication/wrap-with-jwt-middleware datasource)
-                                    auth/wrap-authentication-check]}]]]
+                      person-private/routes]]]
 
                    {:data {:coercion   reitit-schema/coercion
-                           :ctx        {:datasource datasource}
                            :muuntaja   m/instance
-                           :middleware [;;TODO -- wrapper with CTX
-                                        ;; ring handler logger
-                                        logger/wrap-with-logger
+                           :middleware [logger/wrap-with-logger
+                                        ;; injection of ctx
+                                        (partial ctx/wrap-with-ctx-middleware ctx)
                                         ;; ring cors middleware
                                         cors/cors-middleware
                                         ;; query-params & form-params
                                         parameters/parameters-middleware
                                         ;; content-negotiation
                                         muuntaja/format-negotiate-middleware
+                                        ;; format query params
+                                        param/format-params-middleware
                                         ;; encoding response body
                                         muuntaja/format-response-middleware
                                         ;; exception handling

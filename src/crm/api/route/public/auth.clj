@@ -1,7 +1,6 @@
 (ns crm.api.route.public.auth
   (:require [crm.api.controller.auth :as controller]
-            [crm.api.schema.auth :refer [SignIn AuthenticationToken]]
-            [crm.lib.api.router :refer [wrap-with-context]]))
+            [crm.api.schema.auth :refer [SignIn AuthenticationToken]]))
 
 (def routes
   ["/auth"
@@ -11,6 +10,5 @@
     {:post {:summary "Create new account"
             :responses {200 {:body AuthenticationToken}}
             :parameters {:body SignIn}
-            :handler (wrap-with-context
-                       (fn [request]
-                         (controller/sign-in request)))}}]])
+            :handler (fn [request]
+                       (controller/sign-in request))}}]])
