@@ -16,6 +16,7 @@
             :handler    (wrap-with-context
                           (fn [request]
                             (controller/create! request)))}
+
      :get  {:summary   "Returns list of all users"
             :responses {200 {:body UserListOutput}}
             :handler   (wrap-with-context
@@ -28,6 +29,7 @@
               :handler    (wrap-with-context
                             (fn [request]
                               (controller/get-by-id! request)))}
+
      :put    {:summary    "Updates user by ID"
               :responses  {200 {:body UserOutput}}
               :parameters {:body UpdateUser
@@ -35,6 +37,7 @@
               :handler    (wrap-with-context
                             (fn [request]
                               (controller/update! request)))}
+
      :delete {:summary    "Deletes user by ID"
               :responses  {200 {:body MessageResponse}}
               :parameters {:path {:id s/Int}}
