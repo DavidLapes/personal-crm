@@ -10,9 +10,9 @@
   (query/insert! connection table-name person))
 
 (defn update!
-  "Updates a person."
-  [connection id person]
-  (query/update-by-id! connection table-name id person))
+  "Updates persons with given data by given filters."
+  [connection data filters]
+  (query/update! connection table-name data filters))
 
 (defn get-by-id!
   "Returns person by given ID."

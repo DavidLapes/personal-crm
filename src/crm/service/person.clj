@@ -13,8 +13,8 @@
   "Updates an existing person."
   [datasource id data]
   (jdbc/with-db-transaction [connection {:datasource datasource}]
-    (let [updated-person (model/update! connection id data)]
-      (model/get-by-id! connection (:id updated-person)))))
+    (let [_ (model/update! connection data {:id id})]
+      (model/get-by-id! connection id))))
 
 (defn get-by-id!
   "Returns person by given ID."

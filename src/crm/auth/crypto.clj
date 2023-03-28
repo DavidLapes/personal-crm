@@ -1,6 +1,6 @@
 (ns crm.auth.crypto
   (:require [buddy.hashers :as hashers]
-            [microservice.component.params :as params]))
+            [microservice.component.param :as params]))
 
 (defn- encryption-salt []
   (params/get-param :crm-jwt-salt))

@@ -3,7 +3,7 @@
             [microservice.component.datasource :as datasource]
             [microservice.component.handler :as handler]
             [microservice.component.migration :as migration]
-            [microservice.component.params :as params]
+            [microservice.component.param :as params]
             [microservice.component.router :as router]
             [microservice.component.swagger :as swagger]
             [microservice.component.web-server :as web-server]

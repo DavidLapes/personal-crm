@@ -5,7 +5,7 @@
             [crm.auth.crypto :as crypto]
             [crm.lib.db.utils :as query]
             [crm.service.user :as user-service]
-            [microservice.component.params :as params])
+            [microservice.component.param :as params])
   (:import (java.time LocalDateTime)))
 
 (defn- jwt-secret []

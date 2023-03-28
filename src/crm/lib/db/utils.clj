@@ -1,17 +1,15 @@
 (ns crm.lib.db.utils
+  (:refer-clojure :exclude [update set])
   (:require [crm.lib.db.order :as lib-order]
             [crm.lib.db.pagination :as lib-pagination]
             [clojure.java.jdbc :as jdbc]
             [clojure.java.io :as io]
             [clojure.walk :refer [keywordize-keys]]
-            [honeysql.core :as sql-core]
-            [honeysql.helpers :as honey :refer [delete-from insert-into values where merge-where]]
+            [honey.sql :as sql-core]
+            [honey.sql.helpers :as honey]
             [honeysql-postgres.format :refer :all]
             [honeysql-postgres.helpers :as psqlh]
             [taoensso.timbre :as timbre]))
-
-(defn- keywordize-filters [filters]
-  (keywordize-keys filters))
 
 (defn- insertable-cartesian-product
   "Returns vector of maps for multi-row insert into relation tables
@@ -36,23 +34,25 @@
   (timbre/info (str "Executing SQL file - " file))
   (jdbc/db-do-prepared connection (slurp (io/resource file))))
 
-(def ^:private filters-blacklist
+(def general-filters
   #{:limit :order_column :order_direction :order_limit :page_number})
 
-(defn- is-blacklisted? [key]
-  (-> (key filters-blacklist)
+(defn- is-general-filter? [key]
+  (-> (key general-filters)
       nil?
       not))
 
+;;TODO: Does the HoneySQL 2.0 support arrays by nature?
+;;TODO: Think about model-specific filters like names, addresses etc. maybe also create filters namespace
 (defn- apply-filters
   "Returns HoneySQL query enriched with WHERE clauses using filters map provided as argument."
   [query filters]
   (let [filters (keywordize-keys filters)]
     (reduce
       (fn [query [filter-key filter-value]]
-        (if (is-blacklisted? filter-key)
+        (if (is-general-filter? filter-key)
           query
-          (merge-where query [:= filter-key filter-value])))
+          (honey/where query [:= filter-key filter-value])))
       query
       filters)))
 
@@ -71,7 +71,7 @@
 (defn- common-filter-count-query!
   "Returns integer result of count query with all common non-nil filters applied."
   [connection table filters]
-  (let [query (-> (honey/select (sql-core/raw "COUNT(*)"))
+  (let [query (-> (honey/select :%count.*)
                   (honey/from table)
                   (apply-filters filters))
         result (query! connection query)]
@@ -80,6 +80,7 @@
       (:count result))))
 
 ;;TODO: Support filters like ids=1,2,3 (arrays)
+;;TODO: Re-name to apply-... maybe? Also, this calls directly query! which is execution, split it
 (defn- common-filter-query!
   "Returns result of query with all common non-nil filters applied."
   [connection table filters]
@@ -96,6 +97,18 @@
   "Executes insert query. Table must be passed as a keyword and data must be a map."
   [connection table id data]
   (jdbc/update! connection table data ["id = ?" id] {:return-keys true}))
+
+;;TODO: Batch update like id=1,2,3
+;;TODO: Maybe don't use jdbc/update, but jdbc/exec-query?
+(defn update!
+  "Executes insert query. Table must be passed as a keyword and data must be a map."
+  [connection table filters data]
+  (exec-query! connection
+               (-> (honey/update table)
+                   (honey/set )
+                   (apply-filters filters)))
+                   )
+
 
 (defn insert!
   "Executes insert query. Table must be passed as a keyword and data must be a map.
@@ -123,8 +136,8 @@
                   (into [] c2-vals)
                   [c2-vals])
         insert-data (insertable-cartesian-product c1-name c1-vals c2-name c2-vals)]
-    (->> (-> (insert-into table-name)
-             (values insert-data)
+    (->> (-> (honey/insert-into table-name)
+             (honey/values insert-data)
              (psqlh/on-conflict c1-name c2-name)
              (psqlh/do-nothing))
          (exec-query! connection))))
@@ -132,16 +145,17 @@
 (defn delete!
   "Performs DELETE on given table using filters map."
   [connection table filters]
-  (let [filters (keywordize-filters filters)]
-    (exec-query! connection
-                 (-> (delete-from table)
-                     (apply-filters filters)))))
+  (exec-query! connection
+               (-> (honey/delete-from table)
+                   (apply-filters filters))))
 
 (defn get-by-id!
   "Returns single row by PK value, defaulted to :id PK column by provided ID value.
    If no row is found, returns nil."
-  [connection table id]
-  (jdbc/get-by-id connection table id))
+  ([connection table id]
+   (jdbc/get-by-id connection table id))
+  ([connection table id pk-name]
+   (jdbc/get-by-id connection table id pk-name)))
 
 (defn get-one!
   "Returns one row for given table with possible filters.

@@ -1,4 +1,4 @@
-(ns microservice.component.params
+(ns microservice.component.param
   (:require [clojure.java.io :as io]
             [taoensso.timbre :as timbre]))
 

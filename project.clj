@@ -32,8 +32,8 @@
                  [funcool/clojure.jdbc "0.9.0"]
                  [migratus "1.3.3" :exclusions [org.clojure/tools.logging]]
                  [hikari-cp "2.12.0"]
-                 [honeysql "1.0.444"]
-                 [nilenso/honeysql-postgres "0.2.6"]
+                 [com.github.seancorfield/honeysql "2.4.980"]
+                 [nilenso/honeysql-postgres "0.4.112"]
                  [clj-postgresql "0.7.0" :exclusions [ch.qos.logback/logback-core
                                                       ch.qos.logback/logback-classic]]
                  [buddy "2.0.0" :exclusions [cheshire

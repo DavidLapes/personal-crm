@@ -15,13 +15,15 @@
   "Creates new user."
   [datasource data]
   (jdbc/with-db-transaction [connection {:datasource datasource}]
-    (model/create! connection (encrypt-password data))))
+    (let [new-user (model/create! connection (encrypt-password data))]
+      (model/get-by-id! connection (:id new-user)))))
 
 (defn update!
   "Updates an existing user."
   [datasource id data]
   (jdbc/with-db-transaction [connection {:datasource datasource}]
-    (model/update! connection id (encrypt-password data))))
+    (let [_ (model/update! connection (encrypt-password data) {:id id})]
+      (model/get-by-id! connection id))))
 
 (defn get-by-id!
   "Returns user by given ID."

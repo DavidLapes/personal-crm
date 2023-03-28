@@ -4,11 +4,13 @@
             [microservice.component.middleware.cors :as cors]
             [microservice.component.middleware.ctx :as ctx]
             [microservice.component.middleware.exception :as exception]
-            [microservice.component.middleware.param :as param]
+    ;;TODO: Maybe unify the names to either in plural or singular
+            [microservice.component.middleware.filter :as filters]
+            [microservice.component.middleware.param :as params]
             [muuntaja.core :as m]
             [reitit.coercion.schema :as reitit-schema]
             [reitit.ring :as ring]
-            [reitit.ring.middleware.parameters :as parameters]
+            [reitit.ring.middleware.parameters :as ring-parameters]
             [reitit.ring.middleware.muuntaja :as muuntaja]
             [reitit.ring.coercion :as coercion]
             [ring.logger :as logger]
@@ -45,11 +47,9 @@
                                         ;; ring cors middleware
                                         cors/cors-middleware
                                         ;; query-params & form-params
-                                        parameters/parameters-middleware
+                                        ring-parameters/parameters-middleware
                                         ;; content-negotiation
                                         muuntaja/format-negotiate-middleware
-                                        ;; format query params
-                                        param/format-params-middleware
                                         ;; encoding response body
                                         muuntaja/format-response-middleware
                                         ;; exception handling
@@ -59,7 +59,11 @@
                                         ;; coercing response body
                                         coercion/coerce-response-middleware
                                         ;; coercing request parameters
-                                        coercion/coerce-request-middleware]}})]
+                                        coercion/coerce-request-middleware
+                                        ;; format query params
+                                        params/format-params-middleware
+                                        ;; extract filters
+                                        filters/extract-filters-middleware]}})]
       (timbre/info "Started Router component")
       (assoc this :router router)))
 

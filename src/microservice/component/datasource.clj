@@ -1,7 +1,7 @@
 (ns microservice.component.datasource
   (:require [com.stuartsierra.component :as component]
             [hikari-cp.core :as hikari]
-            [microservice.component.params :as params]
+            [microservice.component.param :as params]
             [taoensso.timbre :as timbre]))
 
 (defn- credentials []

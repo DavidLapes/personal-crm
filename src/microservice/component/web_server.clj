@@ -1,6 +1,6 @@
 (ns microservice.component.web-server
   (:require [com.stuartsierra.component :as component]
-            [microservice.component.params :as params]
+            [microservice.component.param :as params]
             [org.httpkit.server :as server]
             [taoensso.timbre :as timbre]))
 
