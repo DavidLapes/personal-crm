@@ -2,7 +2,6 @@
   (:require [crm.lib.db.utils :as db-utils]))
 
 ;;TODO: Implement filter for full_name?
-;;TODO: Implement full-text search?
 
 (def general-sql-filters db-utils/general-filters)
 
