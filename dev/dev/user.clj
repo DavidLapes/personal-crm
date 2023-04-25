@@ -1,4 +1,4 @@
-(ns dev-user
+(ns dev.user
     (:require [com.stuartsierra.component.repl :as repl]
       [microservice.system :refer [make-system]]
       [taoensso.timbre :as timbre])

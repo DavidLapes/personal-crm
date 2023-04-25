@@ -49,7 +49,7 @@
   :source-paths ["src"]
   :resource-paths ["resources"]
 
-  :repl-options {:init-ns dev-user}
+  :repl-options {:init-ns dev.user}
 
   :pedantic? :abort
 
