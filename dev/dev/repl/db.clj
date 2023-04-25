@@ -1,5 +1,6 @@
 (ns dev.repl.db
   (:require [clojure.java.jdbc :as jdbc]
+            [crm.lib.db.filters :as db-filters]
             [dev.user :refer [system]]
             [honey.sql :as sql-core]
             [honey.sql.helpers :as honey]))
@@ -22,8 +23,8 @@
       (honey/from :users)
       (exec-query)))
 
-(defn- select-users-concat []
+(defn- select-users-full-name-filter [filter]
   (-> (honey/select :*)
       (honey/from :users)
-      (honey/where [:like [:concat :email :last_name] "%admin%"])
+      (db-filters/add-full-name-filter filter)
       (exec-query)))
