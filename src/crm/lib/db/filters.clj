@@ -8,7 +8,7 @@
                                                  :middle-name-column :middle_name
                                                  :last-name-column   :last_name}))
   ([query full-name-filter {:keys [first-name-column middle-name-column last-name-column]}] +
-   (honey/where query [:like
+   (honey/where query [:ilike
                        [:replace
                         [:concat
                          [:concat first-name-column " "]
