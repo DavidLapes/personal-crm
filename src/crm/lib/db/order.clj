@@ -3,6 +3,8 @@
             [clojure.walk :refer [keywordize-keys]]
             [honeysql.helpers :as honey]))
 
+;;TODO: Remove dependency for honeysql.helpers since it's deprecated in both order and pagination
+
 (defn- extract-order-column
   "Returns keywordized order column filter from filters map."
   [filters]

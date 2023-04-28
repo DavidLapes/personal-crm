@@ -37,6 +37,12 @@
   (jdbc/with-db-connection [connection {:datasource datasource}]
     (model/get-by-email! connection email)))
 
+(defn get-by-credentials!
+  "Returns user by email and password credentials."
+  [datasource email password]
+  (jdbc/with-db-connection [connection {:datasource datasource}]
+    (model/get-by-credentials! connection email (crypto/encrypt password))))
+
 (defn get-all!
   "Returns users by given filters."
   [datasource filters]

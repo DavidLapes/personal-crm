@@ -1,9 +1,7 @@
 (ns crm.auth.core
   (:require [buddy.auth.backends :as backends]
             [buddy.sign.jwt :as jwt]
-            [clojure.java.jdbc :as jdbc]
             [crm.auth.crypto :as crypto]
-            [crm.lib.db.utils :as query]
             [crm.service.user :as user-service]
             [microservice.component.param :as params])
   (:import (java.time LocalDateTime)))
@@ -44,12 +42,6 @@
                  :on-error (fn [_ ex]
                              (throw ex))}))
 
-(defn get-login-detail-by-email!
-  "Returns user by email."
-  [datasource email]
-  (jdbc/with-db-connection [connection {:datasource datasource}]
-    (query/get-one! connection crm.model.user/table-name {:email email})))
-
 (defn generate-auth-token
   "Generates authentication token for given user."
   [user]
@@ -61,15 +53,14 @@
   "Signs in given user and returns generated token if authentication succeeds."
   [datasource email password]
   (let [email (-> email (.toLowerCase))
-        user (get-login-detail-by-email! datasource email)
-        encrypted-password (:password user)]
-    (if (crypto/check-password password encrypted-password)
+        user (user-service/get-by-credentials! datasource email password)]
+    (if (any? user)
       (if (user-service/deleted? user)
         (throw (ex-info "User is deleted" {:cause :deleted}))
         (if (user-service/active? user)
           (generate-auth-token user)
           (throw (ex-info "User is inactive" {:cause :inactive}))))
-      (throw (ex-info "Invalid password" {:cause :invalid-credentials})))))
+      (throw (ex-info "Invalid credentials" {:cause :invalid-credentials})))))
 
 (defn sign-up
   "Signs up new user and returns created user with new token if registration succeeds."

@@ -24,8 +24,8 @@
 
 (defn get-all!
   "Returns users by given filters."
-  [{:keys [ctx query-params]}]
-  (let [guests (service/get-all! (:datasource ctx) query-params)]
+  [{:keys [ctx filters]}]
+  (let [guests (service/get-all! (:datasource ctx) filters)]
     (ok guests)))
 
 (defn delete!

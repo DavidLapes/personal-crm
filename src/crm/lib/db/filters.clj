@@ -1,6 +1,29 @@
 (ns crm.lib.db.filters
   (:require [honey.sql.helpers :as honey]))
 
+(defn add-ilike-filter
+  "Adds simple LIKE where-clause to HoneySQL query."
+  [query column-name value]
+  (honey/where query [:like column-name [:concat "%" value "%"]]))
+
+(defn add-in-filter
+  "Adds simple IN where-clause to HoneySQL query."
+  [query column-name value]
+  (let [value (if (coll? value)
+                value
+                [value])]
+    (honey/where query [:in column-name value])))
+
+(defn add-is-filter
+  "Adds simple IS where-clause to HoneySQL query."
+  [query column-name value]
+  (honey/where query [:is column-name value]))
+
+(defn add-is-not-filter
+  "Adds simple IS where-clause to HoneySQL query."
+  [query column-name value]
+  (honey/where query [:is-not column-name value]))
+
 (defn add-full-name-filter
   "Adds full-name filter to HoneySQL query."
   ([query full-name-filter]
