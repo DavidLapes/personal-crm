@@ -4,7 +4,6 @@
             [microservice.component.middleware.cors :as cors]
             [microservice.component.middleware.ctx :as ctx]
             [microservice.component.middleware.exception :as exception]
-    ;;TODO: Maybe unify the names to either in plural or singular
             [microservice.component.middleware.filter :as filters]
             [microservice.component.middleware.param :as params]
             [muuntaja.core :as m]
