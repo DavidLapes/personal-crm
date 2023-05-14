@@ -109,7 +109,6 @@
         insert-data (insertable-cartesian-product c1-name c1-vals c2-name c2-vals)]
     (->> (-> (honey/insert-into table-name)
              (honey/values insert-data)
-             ;;TODO: Doesn't HoneySQL 2.0 support this now?
              (honey/on-conflict c1-name c2-name)
              (honey/do-nothing))
          (exec-query! connection))))
