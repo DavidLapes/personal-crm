@@ -6,8 +6,6 @@
             [clojure.java.io :as io]
             [honey.sql :as sql-core]
             [honey.sql.helpers :as honey]
-            [honeysql-postgres.format :refer :all]
-            [honeysql-postgres.helpers :as psqlh]
             [taoensso.timbre :as timbre]))
 
 (defn- insertable-cartesian-product
@@ -56,10 +54,6 @@
       (:count (first result))
       (:count result))))
 
-;;TODO: Does the HoneySQL 2.0 support arrays by nature?
-;;TODO: Think about model-specific filters like names, addresses etc. maybe also create filters namespace
-;;TODO: Support filters like ids=1,2,3 (arrays)
-;;TODO: Re-name to apply-... maybe? Also, this calls directly query! which is execution, split it
 (defn- common-filter-query!
   "Returns result of query with all common non-nil filters applied."
   ([connection table filters]
@@ -73,15 +67,12 @@
                   (some? (:order_column filters)) (lib-order/apply-order-filter filters))
           (query! connection)))))
 
-
 (defn update-by-id!
   "Executes insert query. Table must be passed as a keyword and data must be a map."
   [connection table id data]
   (jdbc/update! connection table data ["id = ?" id] {:return-keys true}))
 
 ;;TODO: Not related to DB utils but think about upgrading dependencies :)
-;;TODO: Support mass-update
-;;TODO: Batch update like id=1,2,3
 (defn update!
   "Executes insert query. Table must be passed as a keyword and data must be a map."
   [connection table data where-clauses]
@@ -119,8 +110,8 @@
     (->> (-> (honey/insert-into table-name)
              (honey/values insert-data)
              ;;TODO: Doesn't HoneySQL 2.0 support this now?
-             (psqlh/on-conflict c1-name c2-name)
-             (psqlh/do-nothing))
+             (honey/on-conflict c1-name c2-name)
+             (honey/do-nothing))
          (exec-query! connection))))
 
 (defn delete!
@@ -140,7 +131,6 @@
   "Returns one row for given table with possible filters.
    If no row is found, returns nil."
   [connection table where-clauses]
-  ;;TODO: This wont work with the new where-clauses at places where it is used
   (-> (common-filter-query! connection table nil where-clauses)
       first))
 

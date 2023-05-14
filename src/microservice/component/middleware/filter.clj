@@ -22,7 +22,6 @@
     (let [request-params (:query-params request)
           default-filters-whitelist (get-default-filters)
           route-filters-whitelist (get-filters-config request)
-          ;;TODO: Figure out how to pass complex and composite filters like full_name, ids against first_name, id etc.
           whitelist (union default-filters-whitelist route-filters-whitelist)
           filters (reduce (fn [params [key value]]
                             (if (is-whitelisted? whitelist key)

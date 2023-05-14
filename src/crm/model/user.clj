@@ -8,40 +8,40 @@
 
 (defn- apply-filters
   "Returns HoneySQL where-clauses by provided filters."
-  ;;TODO: Check if these filters are also allowed in schema
-  ;;TODO: Change the id filter to array in schema since we use IN filter
-  [{:keys [id email name person_id is_active is_deleted
-           birthdate_from birthdate_to time_created_from time_created_to]}]
-  (cond-> nil
-          (some? id)
-          (filters/add-in-filter :id id)
+  ([filters]
+   (apply-filters nil filters))
+  ([query {:keys [id email name person_id is_active is_deleted
+                  birthdate_from birthdate_to time_created_from time_created_to]}]
+   (cond-> query
+           (some? id)
+           (filters/add-in-filter :id id)
 
-          (some? email)
-          (filters/add-ilike-filter :email email)
+           (some? email)
+           (filters/add-ilike-filter :email email)
 
-          (some? name)
-          (filters/add-full-name-filter name)
+           (some? name)
+           (filters/add-full-name-filter name)
 
-          (some? person_id)
-          (filters/add-in-filter :person_id person_id)
+           (some? person_id)
+           (filters/add-in-filter :person_id person_id)
 
-          (some? is_active)
-          (filters/add-is-filter :is_active is_active)
+           (some? is_active)
+           (filters/add-is-filter :is_active is_active)
 
-          (some? is_deleted)
-          (filters/add-is-filter :is_deleted is_deleted)
+           (some? is_deleted)
+           (filters/add-is-filter :is_deleted is_deleted)
 
-          (some? birthdate_from)
-          (filters/add-higher-than-time-filter :birthdate birthdate_from)
+           (some? birthdate_from)
+           (filters/add-higher-than-time-filter :birthdate birthdate_from)
 
-          (some? birthdate_to)
-          (filters/add-lower-than-time-filter :birthdate birthdate_to)
+           (some? birthdate_to)
+           (filters/add-lower-than-time-filter :birthdate birthdate_to)
 
-          (some? time_created_from)
-          (filters/add-higher-than-time-filter :time_created time_created_from)
+           (some? time_created_from)
+           (filters/add-higher-than-time-filter :time_created time_created_from)
 
-          (some? time_created_to)
-          (filters/add-lower-than-time-filter :time_created time_created_to)))
+           (some? time_created_to)
+           (filters/add-lower-than-time-filter :time_created time_created_to))))
 
 (defn create!
   "Creates new user."

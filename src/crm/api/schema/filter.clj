@@ -4,4 +4,6 @@
 
 (def user-filters
   #{:id :email :name :person_id
-    :is_active :is_deleted :time_created})
+    :is_active :is_deleted
+    :birthdate_from :birthdate_to
+    :time_created_from :time_created_to})

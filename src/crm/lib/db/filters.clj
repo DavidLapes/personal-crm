@@ -27,24 +27,19 @@
 
 (defn add-equals-time-filter
   "Adds simple filter for TIMESTAMP column to HoneySQL query."
-  ([query column-name ^String date-time-string]
-   (add-equals-time-filter query column-name (LocalDateTime/parse date-time-string)))
-  ([query column-name ^LocalDateTime ldt]
-   (honey/where query [:= column-name ldt])))
+  [query column-name ^LocalDateTime ldt]
+  (honey/where query [:= column-name ldt]))
 
 (defn add-lower-than-time-filter
   "Adds simple filter for TIMESTAMP with > operator t HoneySQL query."
-  ([query column-name ^String date-time-string]
-   (add-lower-than-time-filter query column-name (LocalDateTime/parse date-time-string)))
-  ([query column-name ^LocalDateTime ldt]
-   (honey/where query [:> column-name ldt])))
+  [query column-name ^LocalDateTime ldt]
+  (honey/where query [:> column-name ldt]))
 
+;;TODO: Check if schema converts date to LocalDateTime correctly (even filters)
 (defn add-higher-than-time-filter
   "Adds simple filter for TIMESTAMP with < operator t HoneySQL query."
-  ([query column-name ^String date-time-string]
-   (add-higher-than-time-filter query column-name (LocalDateTime/parse date-time-string)))
-  ([query column-name ^LocalDateTime ldt]
-   (honey/where query [:< column-name ldt])))
+  [query column-name ^LocalDateTime ldt]
+  (honey/where query [:< column-name ldt]))
 
 (defn add-full-name-filter
   "Adds full-name filter to HoneySQL query."
