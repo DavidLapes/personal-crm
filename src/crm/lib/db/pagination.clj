@@ -1,6 +1,6 @@
 (ns crm.lib.db.pagination
   (:require [clojure.walk :refer [keywordize-keys]]
-            [honeysql.helpers :as honey]))
+            [honey.sql.helpers :as honey]))
 
 (defn- extract-limit
   "Returns limit filter from filters map."
