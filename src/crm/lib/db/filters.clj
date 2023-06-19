@@ -31,7 +31,7 @@
   (honey/where query [:= column-name ldt]))
 
 (defn add-lower-than-time-filter
-  "Adds simple filter for TIMESTAMP with > operator t HoneySQL query."
+  "Adds simple filter for TIMESTAMP with > operator to HoneySQL query."
   [query column-name ^LocalDateTime ldt]
   (honey/where query [:> column-name ldt]))
 
