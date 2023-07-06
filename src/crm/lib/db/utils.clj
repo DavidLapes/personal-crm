@@ -72,7 +72,6 @@
   [connection table id data]
   (jdbc/update! connection table data ["id = ?" id] {:return-keys true}))
 
-;;TODO: Not related to DB utils but think about upgrading dependencies :)
 (defn update!
   "Executes insert query. Table must be passed as a keyword and data must be a map."
   [connection table data where-clauses]
