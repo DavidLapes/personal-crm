@@ -1,11 +1,10 @@
 (ns crm.api.route.public.health-check
   (:require [crm.api.schema.message :refer [MessageResponse]]
-            [crm.lib.api.http-response :refer [response-message]]
-            [ring.util.http-response :refer [ok]]))
+            [crm.api.controller.health-check :as controller]))
 
 (def routes
   ["/health-check"
    {:get {:summary "Checks the health of the application"
           :responses {200 {:body MessageResponse}}
           :handler (fn [_]
-                     (ok (response-message "The API is healthy")))}}])
+                     (controller/health-check))}}])
