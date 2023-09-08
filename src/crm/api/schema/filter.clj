@@ -2,7 +2,6 @@
   (:require [crm.api.schema.coercion :as c]
             [schema.core :as s :refer [defschema]]))
 
-;;TODO: Check what filters can be nil
 (defschema general-sql-filters
   {(s/optional-key :limit)           s/Int
    (s/optional-key :order_column)    s/Str
@@ -14,7 +13,7 @@
   {(s/optional-key :id)                s/Int
    (s/optional-key :email)             s/Str
    (s/optional-key :name)              s/Str
-   (s/optional-key :person_id)         s/Int
+   (s/optional-key :person_id)         (s/maybe s/Int)
    (s/optional-key :is_active)         s/Bool
    (s/optional-key :is_deleted)        s/Bool
    (s/optional-key :time_created_from) c/LocalDateTimeSpec
