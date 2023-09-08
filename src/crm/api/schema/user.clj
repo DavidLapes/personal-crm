@@ -1,5 +1,6 @@
 (ns crm.api.schema.user
-  (:require [schema.core :as s]))
+  (:require [crm.api.schema.coercion :as c]
+            [schema.core :as s]))
 
 (s/defschema CreateUser
   {:email                        s/Str
@@ -23,7 +24,7 @@
                            :full_name   s/Str})
    :is_active    s/Bool
    :is_deleted   s/Bool
-   :time_created s/Inst})
+   :time_created c/LocalDateTimeSpec})
 
 (s/defschema UpdateUser
   {(s/optional-key :email)       s/Str
