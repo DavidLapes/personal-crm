@@ -7,16 +7,28 @@
 
 (defn- apply-filters
   "Returns HoneySQL where-clauses by provided filters."
-  [{:keys [id email name]}]
-  (cond-> nil
-          (some? id)
-          (filters/add-in-filter :id id)
+  ([filters]
+   (apply-filters nil filters))
+  ([query {:keys [id name birthdate_from birthdate_to
+                  time_created_from time_created_to]}]
+   (cond-> query
+           (some? id)
+           (filters/add-in-filter :id id)
 
-          (some? email)
-          (filters/add-ilike-filter :email email)
+           (some? name)
+           (filters/add-full-name-filter name)
 
-          (some? name)
-          (filters/add-full-name-filter name)))
+           (some? birthdate_from)
+           (filters/add-lower-than-time-filter :birthdate birthdate_from)
+
+           (some? birthdate_to)
+           (filters/add-higher-than-time-filter :birthdate birthdate_to)
+
+           (some? time_created_from)
+           (filters/add-lower-than-time-filter :time_created time_created_from)
+
+           (some? time_created_to)
+           (filters/add-higher-than-time-filter :time_created time_created_to))))
 
 (defn create!
   "Creates new person."

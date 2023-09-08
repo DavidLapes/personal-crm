@@ -11,7 +11,7 @@
   ([filters]
    (apply-filters nil filters))
   ([query {:keys [id email name person_id is_active is_deleted
-                  birthdate_from birthdate_to time_created_from time_created_to]}]
+                  time_created_from time_created_to]}]
    (cond-> query
            (some? id)
            (filters/add-in-filter :id id)
@@ -31,17 +31,11 @@
            (some? is_deleted)
            (filters/add-is-filter :is_deleted is_deleted)
 
-           (some? birthdate_from)
-           (filters/add-higher-than-time-filter :birthdate birthdate_from)
-
-           (some? birthdate_to)
-           (filters/add-lower-than-time-filter :birthdate birthdate_to)
-
            (some? time_created_from)
-           (filters/add-higher-than-time-filter :time_created time_created_from)
+           (filters/add-lower-than-time-filter :time_created time_created_from)
 
            (some? time_created_to)
-           (filters/add-lower-than-time-filter :time_created time_created_to))))
+           (filters/add-higher-than-time-filter :time_created time_created_to))))
 
 (defn create!
   "Creates new user."
@@ -73,7 +67,7 @@
   "Returns users by given filters."
   [connection filters]
   (let [where-clauses (apply-filters filters)
-        result (query/get-all! connection table-name-view where-clauses)]
+        result (query/get-all! connection table-name-view filters where-clauses)]
     (update result :data (fn [data]
                            (reduce
                              (fn [coll val]

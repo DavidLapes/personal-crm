@@ -1,5 +1,6 @@
 (ns crm.api.route.private.person
   (:require [crm.api.controller.person :as controller]
+            [crm.api.schema.filter :refer [person-filters]]
             [crm.api.schema.message :refer [MessageResponse]]
             [crm.api.schema.person :refer [CreatePerson PersonOutput PersonListOutput UpdatePerson]]
             [schema.core :as s]))
@@ -16,6 +17,7 @@
                           (controller/create! request))}
      :get  {:summary   "Returns list of all persons"
             :responses {200 {:body PersonListOutput}}
+            :parameters {:query person-filters}
             :handler   (fn [request]
                          (controller/get-all! request))}}]
    ["/:id"

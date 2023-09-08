@@ -18,7 +18,7 @@
 
      :get  {:summary   "Returns list of all users"
             :responses {200 {:body UserListOutput}}
-            :filters   user-filters
+            :parameters {:query user-filters}
             :handler   (fn [request]
                          (controller/get-all! request))}}]
    ["/:id"

@@ -1,11 +1,11 @@
 (ns microservice.component.middleware.filter
   (:require [crm.lib.api.reitit-helper :as reitit-helper]
-            [crm.api.schema.filter :as filter-schema]))
+            [crm.api.schema.filter :as filter-schema]
+            [schema.core :as s]))
 
 (defn- is-whitelisted? [filters-whitelist key]
   (-> (key filters-whitelist)
-      nil?
-      not))
+      some?))
 
 (defn- get-default-filters []
   filter-schema/general-sql-filters)
@@ -24,7 +24,7 @@
           default-filters-whitelist (get-default-filters)
           route-filters-whitelist (get-allowed-filters request)
           filters-specs (merge default-filters-whitelist route-filters-whitelist)
-          filters-whitelist (merge (keys default-filters-whitelist) (keys route-filters-whitelist))
+          filters-whitelist (into #{} (map #(if (s/optional-key? %) (:k %) %) (keys filters-specs)))
           filters (reduce (fn [params [key value]]
                             (if (is-whitelisted? filters-whitelist key)
                               (assoc params key value)

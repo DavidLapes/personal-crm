@@ -3,7 +3,8 @@
             [crm.lib.db.filters :as db-filters]
             [dev.repl.system :refer [get-system-component]]
             [honey.sql :as sql-core]
-            [honey.sql.helpers :as honey]))
+            [honey.sql.helpers :as honey])
+  (:import (java.time LocalDateTime)))
 
 (defn- datasource []
   (-> (get-system-component)
@@ -29,4 +30,10 @@
   (-> (honey/select :*)
       (honey/from :users)
       (db-filters/add-full-name-filter filter)
+      (exec-query)))
+
+(defn- select-users-time-created-filter []
+  (-> (honey/select :*)
+      (honey/from :users)
+      (honey/where [:> :time_created (LocalDateTime/parse "2023-03-16T18:05:23.334578")])
       (exec-query)))

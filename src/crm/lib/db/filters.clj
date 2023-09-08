@@ -1,6 +1,6 @@
 (ns crm.lib.db.filters
   (:require [honey.sql.helpers :as honey])
-  (:import (java.util Date)))
+  (:import (java.time LocalDateTime)))
 
 (defn add-ilike-filter
   "Adds simple LIKE where-clause to HoneySQL query."
@@ -25,20 +25,27 @@
   [query column-name value]
   (honey/where query [:is-not column-name value]))
 
+(defn- parse-date-filter
+  "Checks whether given filter is a LocalDateTime. If not, converts it to LocalDateTime."
+  [date]
+  (if (instance? LocalDateTime date)
+    date
+    (LocalDateTime/parse date)))
+
 (defn add-equals-time-filter
   "Adds simple filter for TIMESTAMP column to HoneySQL query."
-  [query column-name ^Date ldt]
-  (honey/where query [:= column-name ldt]))
+  [query column-name ldt]
+  (honey/where query [:= column-name (parse-date-filter ldt)]))
 
 (defn add-lower-than-time-filter
   "Adds simple filter for TIMESTAMP with > operator to HoneySQL query."
-  [query column-name ^Date ldt]
-  (honey/where query [:> column-name ldt]))
+  [query column-name ldt]
+  (honey/where query [:> column-name (parse-date-filter ldt)]))
 
 (defn add-higher-than-time-filter
   "Adds simple filter for TIMESTAMP with < operator t HoneySQL query."
-  [query column-name ^Date ldt]
-  (honey/where query [:< column-name ldt]))
+  [query column-name ldt]
+  (honey/where query [:< column-name (parse-date-filter ldt)]))
 
 (defn add-full-name-filter
   "Adds full-name filter to HoneySQL query."

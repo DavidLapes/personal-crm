@@ -59,7 +59,8 @@
   ([connection table filters]
    (common-filter-query! connection table filters {}))
   ([connection table filters where-clauses-query]
-   (let [query (-> where-clauses-query
+   (let [where-clauses-query (or where-clauses-query {})
+         query (-> where-clauses-query
                    (honey/select :*)
                    (honey/from table))]
      (->> (cond-> query
