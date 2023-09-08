@@ -42,11 +42,11 @@
 
 (defn- exception-handler [default-message exception request]
   (let [cause (get-exception-cause exception)]
-    (let [response (if-let [known-exception (cause exception-codes)]
+    (let [response (if-let [known-exception (get-in exception-codes [cause])]
                      {:status (:code known-exception)
                       :body   (-> known-exception :message (response-message))}
                      {:status internal-server-error
-                      :body   (str "Internal Server Error: " "{" default-message "} - " cause)})]
+                      :body   (str "Internal Server Error: " "{" default-message "} - " (or cause "unknown cause"))})]
       (println response)
       response)))
 
