@@ -7,9 +7,11 @@
   (spec [_]
     (schema.spec.leaf/leaf-spec
       (fn [x]
-        (LocalDateTime/parse x))))
+        (if (instance? LocalDateTime x)
+          x
+          (LocalDateTime/parse x)))))
   (explain [_]
-    'LocalDateTime))
+    'LocalDateTimeSpec))
 
 (def LocalDateTimeSpec
   (LocalDateTimeSchema. nil))
