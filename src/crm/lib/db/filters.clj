@@ -1,6 +1,6 @@
 (ns crm.lib.db.filters
   (:require [honey.sql.helpers :as honey])
-  (:import (org.joda.time LocalDateTime)))
+  (:import (java.util Date)))
 
 (defn add-ilike-filter
   "Adds simple LIKE where-clause to HoneySQL query."
@@ -27,18 +27,17 @@
 
 (defn add-equals-time-filter
   "Adds simple filter for TIMESTAMP column to HoneySQL query."
-  [query column-name ^LocalDateTime ldt]
+  [query column-name ^Date ldt]
   (honey/where query [:= column-name ldt]))
 
 (defn add-lower-than-time-filter
   "Adds simple filter for TIMESTAMP with > operator to HoneySQL query."
-  [query column-name ^LocalDateTime ldt]
+  [query column-name ^Date ldt]
   (honey/where query [:> column-name ldt]))
 
-;;TODO: Check if schema converts date to LocalDateTime correctly (even filters)
 (defn add-higher-than-time-filter
   "Adds simple filter for TIMESTAMP with < operator t HoneySQL query."
-  [query column-name ^LocalDateTime ldt]
+  [query column-name ^Date ldt]
   (honey/where query [:< column-name ldt]))
 
 (defn add-full-name-filter

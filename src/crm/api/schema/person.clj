@@ -1,12 +1,11 @@
 (ns crm.api.schema.person
-  (:require [schema.core :as s])
-  (:import (java.time LocalDateTime)))
+  (:require [schema.core :as s]))
 
 (s/defschema CreatePerson
   {:first_name                   s/Str
    (s/optional-key :middle_name) (s/maybe s/Str)
    :last_name                    s/Str
-   (s/optional-key :birthdate)   (s/maybe LocalDateTime)})
+   (s/optional-key :birthdate)   (s/maybe s/Inst)})
 
 (s/defschema PersonOutput
   {:id           s/Int
@@ -21,14 +20,14 @@
                            :middle_name (s/maybe s/Str)
                            :last_name   s/Str
                            :full_name   s/Str})
-   :birthdate    (s/maybe LocalDateTime)
-   :time_created LocalDateTime})
+   :birthdate    (s/maybe s/Inst)
+   :time_created s/Inst})
 
 (s/defschema UpdatePerson
   {(s/optional-key :first_name)  s/Str
    (s/optional-key :middle_name) (s/maybe s/Str)
    (s/optional-key :last_name)   s/Str
-   (s/optional-key :birthdate)   (s/maybe LocalDateTime)})
+   (s/optional-key :birthdate)   (s/maybe s/Inst)})
 
 (s/defschema PersonListOutput
   {:data  [PersonOutput]

@@ -1,8 +1,9 @@
 (ns dev.user
-    (:require [com.stuartsierra.component.repl :as repl]
-      [microservice.system :refer [make-system]]
-      [taoensso.timbre :as timbre])
-    (:import (clojure.lang IDeref)))
+  (:require [com.stuartsierra.component.repl :as repl]
+            [microservice.system :refer [make-system]]
+            [clj-http.client :as clj-client]
+            [taoensso.timbre :as timbre])
+  (:import (clojure.lang IDeref)))
 
 (repl/set-init
   (fn [& args]
