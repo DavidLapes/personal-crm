@@ -3,20 +3,20 @@
             [schema.core :as s :refer [defschema]]))
 
 (defschema general-sql-filters
-  {:limit           s/Int
-   :order_column    s/Str
-   :order_direction s/Str
-   :order_limit     s/Int
-   :page_number     s/Int})
+  {(s/optional-key :limit)           s/Int
+   (s/optional-key :order_column)    s/Str
+   (s/optional-key :order_direction) s/Str
+   (s/optional-key :order_limit)     s/Int
+   (s/optional-key :page_number)     s/Int})
 
 (defschema user-filters
-  {:id                s/Int
-   :email             s/Str
-   :name              s/Str
-   :person_id         s/Int
-   :is_active         s/Bool
-   :is_deleted        s/Bool
-   :birthdate_from    c/LocalDateTimeSpec
-   :birthdate_to      c/LocalDateTimeSpec
-   :time_created_from c/LocalDateTimeSpec
-   :time_created_to   c/LocalDateTimeSpec})
+  {(s/optional-key :id)                s/Int
+   (s/optional-key :email)             s/Str
+   (s/optional-key :name)              s/Str
+   (s/optional-key :person_id)         s/Int
+   (s/optional-key :is_active)         s/Bool
+   (s/optional-key :is_deleted)        s/Bool
+   (s/optional-key :birthdate_from)    c/LocalDateTimeSpec
+   (s/optional-key :birthdate_to)      c/LocalDateTimeSpec
+   (s/optional-key :time_created_from) c/LocalDateTimeSpec
+   (s/optional-key :time_created_to)   c/LocalDateTimeSpec})
