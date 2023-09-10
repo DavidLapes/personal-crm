@@ -16,9 +16,11 @@
             [taoensso.timbre :as timbre]
             [crm.auth.middleware :as authentication]
             [crm.api.route.private.person :as person-private]
+            [crm.api.route.private.secure-ping :as ping-private]
             [crm.api.route.private.user :as user-private]
+            [crm.api.route.public.auth :as auth-public]
             [crm.api.route.public.health-check :as health-check-public]
-            [crm.api.route.public.auth :as auth-public]))
+            [crm.api.route.public.ping :as ping-public]))
 
 (defrecord Router [datasource swagger]
   component/Lifecycle
@@ -31,12 +33,14 @@
                     ["/api"
                      ["/public"
                       auth-public/routes
-                      health-check-public/routes]
+                      health-check-public/routes
+                      ping-public/routes]
                      ["/private"
                       {:middleware [(partial authentication/wrap-with-jwt-middleware ctx)
                                     auth/wrap-authentication-check]}
                       user-private/routes
-                      person-private/routes]]]
+                      person-private/routes
+                      ping-private/routes]]]
 
                    {:data {:coercion   reitit-schema/coercion
                            :muuntaja   m/instance
