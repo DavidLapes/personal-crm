@@ -1,10 +1,10 @@
-(ns crm.api.route.private.secure-ping
+(ns crm.api.route.private.ping
   (:require [crm.api.schema.message :refer [MessageResponse]]
-            [crm.api.controller.secure-ping :as controller]))
+            [crm.api.controller.ping :as controller]))
 
 (def routes
-  ["/secure-ping"
+  ["/ping"
    {:get {:summary "Attempts secured ping against the application"
           :responses {200 {:body MessageResponse}}
           :handler (fn [_]
-                     (controller/secure-ping))}}])
+                     (controller/ping))}}])

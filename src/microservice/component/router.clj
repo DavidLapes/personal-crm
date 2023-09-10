@@ -16,7 +16,7 @@
             [taoensso.timbre :as timbre]
             [crm.auth.middleware :as authentication]
             [crm.api.route.private.person :as person-private]
-            [crm.api.route.private.secure-ping :as ping-private]
+            [crm.api.route.private.ping :as ping-private]
             [crm.api.route.private.user :as user-private]
             [crm.api.route.public.auth :as auth-public]
             [crm.api.route.public.health-check :as health-check-public]
