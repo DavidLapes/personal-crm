@@ -26,3 +26,35 @@
   "Constructs path to a private endpoint."
   [path]
   (str "/api/private" path))
+
+(defn get-handler
+  "Obtains handler from initialized test system."
+  []
+  (-> @test-system :crm.component/handler :handler))
+
+(defn call-internal-endpoint
+  "Executes request with following configuration
+
+  :request-method
+  :uri
+
+  against internal endpoint."
+  [request]
+  (let [handler (get-handler)]
+    (handler request)))
+
+(def authentication-token
+  ^{:doc "Retrieves authentication token."}
+  (delay
+    (let [request  {:request-method :post
+                    :uri            (build-public-path "/auth/sign-in")
+                    :body-params    {:email "test_admin@gmail.com"
+                                     :password "test_admin"}}
+          response (call-internal-endpoint request)
+          token    (-> response :body :token)]
+      (str "Bearer " token))))
+
+(defn wrap-authentication
+  "Wraps a request with proper authentication."
+  [request]
+  (update-in request [:headers] merge {"Authorization" @authentication-token}))

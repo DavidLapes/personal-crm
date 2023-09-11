@@ -13,6 +13,10 @@
                                             :message "Neplatné přihlašovací údaje"}
    :not-authenticated                      {:code    unauthorized
                                             :message "Nejsi přihlášen(a), prosím, přihlas se"}
+   :user-inactive                          {:code    unauthorized
+                                            :message "Uživatel není aktivný."}
+   :user-deleted                           {:code    unauthorized
+                                            :message "Uživatel je smazaný."}
    :rsvp-for-guest-already-answered        {:code    bad-request
                                             :message "Tvá účast může být potvrzena pouze jednou"}
    :modify-guest-failed                    {:code    internal-server-error

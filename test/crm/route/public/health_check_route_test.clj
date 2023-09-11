@@ -1,6 +1,6 @@
 (ns crm.route.public.health-check-route-test
   (:require [clojure.test :refer :all]
-            [crm.route.route-test :refer [get-match get-endpoint build-public-path]])
+            [crm.route.route-test :refer [get-match get-endpoint build-public-path call-internal-endpoint]])
   (:import (reitit.core Match)))
 
 (deftest health-check-endpoint-test
@@ -12,4 +12,9 @@
       (let [endpoint              (get-endpoint path-match :get)
             {:keys [method path]} endpoint]
         (is (= path expected-path))
-        (is (= method :get))))))
+        (is (= method :get))))
+    (testing (str "Execution of " expected-path " returns 200")
+      (let [request  {:request-method :get
+                      :uri expected-path}
+            {status :status} (call-internal-endpoint request)]
+        (is (= status 200))))))

@@ -25,12 +25,12 @@
            email (:email token-user)
            model-user (user-service/get-by-email! datasource email)]
        (if (user-service/deleted? model-user)
-         (throw (ex-info "User is deleted" {:cause :deleted}))
+         (throw (ex-info "User is deleted" {:cause :user-deleted}))
          (if (user-service/active? model-user)
            (if (valid-token? auth-data)
              model-user
              (throw (ex-info "Authentication token has expired" {:cause :expired-auth-token})))
-           (throw (ex-info "User is inactive" {:cause :inactive})))))))
+           (throw (ex-info "User is inactive" {:cause :user-inactive})))))))
 
 (defn authentication-config
   [datasource]
@@ -56,10 +56,10 @@
         user (user-service/get-by-credentials! datasource email password)]
     (if (any? user)
       (if (user-service/deleted? user)
-        (throw (ex-info "User is deleted" {:cause :deleted}))
+        (throw (ex-info "User is deleted" {:cause :user-deleted}))
         (if (user-service/active? user)
           (generate-auth-token user)
-          (throw (ex-info "User is inactive" {:cause :inactive}))))
+          (throw (ex-info "User is inactive" {:cause :user-inactive}))))
       (throw (ex-info "Invalid credentials" {:cause :invalid-credentials})))))
 
 (defn sign-up
