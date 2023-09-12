@@ -12,7 +12,7 @@
 
 (defn request
   "Executes request and returns decoded response."
-  [{:keys [method body uri]}]
+  [{:keys [method body uri headers] :or {headers {}}}]
   (let [request-fn (case method
                      :get    c/get
                      :post   c/post
@@ -22,8 +22,9 @@
         body (if (some? body)
                {:body (cheshire.core/encode body)}
                {})
-        request (merge body {:throw-exceptions false
-                             :accept :json
-                             :content-type :json})]
+        headers {:headers headers}
+        request (merge body headers {:throw-exceptions false
+                                     :accept :json
+                                     :content-type :json})]
     (-> (request-fn uri request)
         parse-response)))

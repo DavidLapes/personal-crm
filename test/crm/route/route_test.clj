@@ -49,7 +49,8 @@
           token    (-> response :body :token)]
       (str "Bearer " token))))
 
-(defn wrap-authentication
+(defn authenticated-request
   "Wraps a request with proper authentication."
   [request]
-  (update-in request [:headers] merge {"Authorization" @authentication-token}))
+  (-> (update-in request [:headers] merge {"Authorization" @authentication-token})
+      client/request))
