@@ -1,10 +1,12 @@
 (ns crm.route.public.ping_route_test
   (:require [clojure.test :refer :all]
-            [crm.route.route-test :refer [get-match get-endpoint build-public-path call-internal-endpoint]])
+            [crm.lib.http.client :as client]
+            [crm.route.route-test :refer [get-match get-endpoint build-public-path build-full-public-path]])
   (:import (reitit.core Match)))
 
 (deftest ping-endpoint-test
   (let [expected-path   (build-public-path "/ping")
+        full-path       (build-full-public-path "/ping")
         path-match      (get-match expected-path)]
     (testing (str "Routes contain " expected-path " endpoint(s)")
       (is (instance? Match path-match)))
@@ -14,7 +16,6 @@
         (is (= path expected-path))
         (is (= method :get))))
     (testing (str "Execution of " expected-path " returns 200")
-      (let [request  {:request-method :get
-                      :uri expected-path}
-            {status :status} (call-internal-endpoint request)]
+      (let [{status :status} (client/request {:method :get
+                                              :uri full-path})]
         (is (= status 200))))))

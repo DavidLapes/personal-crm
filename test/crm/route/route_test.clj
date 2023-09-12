@@ -1,6 +1,8 @@
 (ns crm.route.route-test
   (:require [clojure.test :refer :all]
             [crm.core-test :refer [test-system]]
+            [crm.lib.http.client :as client]
+            [microservice.component.param :refer [get-param]]
             [reitit.core :as reitit]))
 
 (defn get-router []
@@ -27,30 +29,23 @@
   [path]
   (str "/api/private" path))
 
-(defn get-handler
-  "Obtains handler from initialized test system."
-  []
-  (-> @test-system :crm.component/handler :handler))
+(defn build-full-public-path
+  "Constructs full path to a public endpoint."
+  [path]
+  (str "http://localhost:" (get-param :crm-web-server-port) "/api/public" path))
 
-(defn call-internal-endpoint
-  "Executes request with following configuration
-
-  :request-method
-  :uri
-
-  against internal endpoint."
-  [request]
-  (let [handler (get-handler)]
-    (handler request)))
+(defn build-full-private-path
+  "Constructs full path to a private endpoint."
+  [path]
+  (str "http://localhost:" (get-param :crm-web-server-port) "/api/private" path))
 
 (def authentication-token
   ^{:doc "Retrieves authentication token."}
   (delay
-    (let [request  {:request-method :post
-                    :uri            (build-public-path "/auth/sign-in")
-                    :body-params    {:email "test_admin@gmail.com"
-                                     :password "test_admin"}}
-          response (call-internal-endpoint request)
+    (let [response (client/request {:method :post
+                                    :uri    (build-full-public-path "/auth/sign-in")
+                                    :body   {:email "admin@admin.com"
+                                             :password "admin"}})
           token    (-> response :body :token)]
       (str "Bearer " token))))
 
