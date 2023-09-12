@@ -54,7 +54,7 @@
   [datasource email password]
   (let [email (-> email (.toLowerCase))
         user (user-service/get-by-credentials! datasource email password)]
-    (if (any? user)
+    (if (some? user)
       (if (user-service/deleted? user)
         (throw (ex-info "User is deleted" {:cause :user-deleted}))
         (if (user-service/active? user)
