@@ -6,7 +6,7 @@
 
 (repl/set-init
   (fn [& args]
-      (make-system)))
+    (make-system {:profile :dev})))
 
 (def system
   ^{:doc "Provides access to the current system components"}

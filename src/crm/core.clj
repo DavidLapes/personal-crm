@@ -7,7 +7,8 @@
 (defn -main
   "Starts CRM application."
   [& args]
-  (timbre/info "Starting CRM application")
-  (start (system/make-system))
-  (timbre/info "Started CRM application")
-  :ok)
+  (let [profile (keyword (System/getProperty "Profile"))]
+    (timbre/info "Starting CRM application")
+    (start (system/make-system profile))
+    (timbre/info "Started CRM application")
+    :ok))

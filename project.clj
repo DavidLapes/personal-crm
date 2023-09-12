@@ -7,6 +7,7 @@
   :dependencies [[org.clojure/clojure "1.10.3"]
                  [http-kit "2.3.0"]
                  [clj-http "3.12.3"]
+                 [aero "1.1.6"]
                  [metosin/reitit "0.5.13" :exclusions [org.clojure/tools.reader
                                                        com.fasterxml.jackson.datatype/jackson-datatype-jsr310
                                                        metosin/jsonista

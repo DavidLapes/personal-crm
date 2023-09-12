@@ -15,9 +15,9 @@
 
 (defn make-system
   "Creates new Sierra Component system map."
-  []
+  [{:keys [profile]}]
   (logging/init-logging)
-  (params/init-params)
+  (params/init-params profile)
   (component/system-map
     :crm.component/datasource (datasource/new-datasource)
     :crm.component/handler (handler/new-handler :crm.component/router

@@ -9,6 +9,6 @@
 (def test-system
   ^{:doc "Provides access to the current test system components"}
   (delay
-    (-> (system/make-system)
+    (-> (system/make-system {:profile :test})
         (merge (make-test-system))
         (component/start-system))))

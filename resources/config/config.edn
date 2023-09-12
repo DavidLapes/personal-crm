@@ -1,0 +1,23 @@
+{:crm-environment #env CRM_ENVIRONMENT
+
+ :crm-web-server-port #or [#env CRM_WEB_SERVER_PORT 5000]
+ :crm-web-server-thread-count #or [#env CRM_WEB_SERVER_THREAD_COUNT 4]
+
+ :crm-jwt-salt #or [#env CRM_JWT_SALT "\".X5/AuAh4Wc.arYkJ!5StEI=m/17zh-Rvvl5ZtkS4Vb+o(u/I@O76RnAN99i*CX(34(KMhRrwB3K/mNe=1CM/TGLxcqut_1s_zXBFBrFN0vk8ToAOg3qV2U(4IN)vt7KxbSM/7!r!FxH!l?g.Kh3:q=hVDvOB1!TGSirDJNnwSs(#f-SeetQJLm?Czl0/MhW4+TT00UW*2H+OT67mN9WcMWNTJ02+MUwio#n_W(dN(gde?FT.bsACPGL4SoBqmhf\""]
+ :crm-jwt-secret #or [#env CRM_JWT_SECRET "development-secret"]
+
+ :crm-db-user #profile {:prod #env CRM_DB_USER
+                        :dev "postgres"
+                        :test "postgres"}
+ :crm-db-password #profile {:prod #env CRM_DB_PASSWORD
+                            :dev "password"
+                            :test "password"}
+ :crm-db-name #profile {:prod #env CRM_DB_NAME
+                        :dev "personalcrmdb"
+                        :test "personalcrmtestdb"}
+ :crm-db-host #profile {:prod #env CRM_DB_HOST
+                        :dev "localhost"
+                        :test "localhost"}
+ :crm-db-port #profile {:prod #env CRM_DB_PORT
+                        :dev 5432
+                        :test 5432}}
