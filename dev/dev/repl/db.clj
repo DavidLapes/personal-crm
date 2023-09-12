@@ -3,7 +3,8 @@
             [crm.lib.db.filters :as db-filters]
             [dev.repl.system :refer [get-system-component]]
             [honey.sql :as sql-core]
-            [honey.sql.helpers :as honey])
+            [honey.sql.helpers :as honey]
+            [crm.service.user :as user])
   (:import (java.time LocalDateTime)))
 
 (defn- datasource []
@@ -37,3 +38,6 @@
       (honey/from :users)
       (honey/where [:> :time_created (LocalDateTime/parse "2023-03-16T18:05:23.334578")])
       (exec-query)))
+
+(defn- get-by-credentials []
+  (user/get-by-credentials! (datasource) "admin@admin.com" "admin"))
