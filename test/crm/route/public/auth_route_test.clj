@@ -23,7 +23,7 @@
         (is (= status 401))))
     (testing (str "Correct credentials " expected-path " returns 200")
       (let [{status :status} (client/request {:method :post
-                                              :uri full-path
-                                              :body {:email    "admin@admin.com"
-                                                     :password "admin"}})]
+                                              :uri    full-path
+                                              :body   {:email    "admin@admin.com"
+                                                       :password "admin"}})]
         (is (= status 200))))))
